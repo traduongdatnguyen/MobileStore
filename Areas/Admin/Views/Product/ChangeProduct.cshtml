@@ -1,0 +1,270 @@
+﻿@model MobileStore.Models.Product
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "ChangeProduct";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb side">
+            <li class="breadcrumb-item active"><a href="#"><b>Danh sách sản phẩm</b></a></li>
+            <li class="breadcrumb-item"><a href="#">Chỉnh sửa sản phẩm @Model.ProductName</a></li>
+        </ul>
+        <div id="clock"></div>
+    </div>
+    @{
+        if (TempData["Message"] != null)
+        {
+                <div class="alert alert-success" role="alert">
+                    @TempData["Message"]
+                </div>
+        }
+    }
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row element-button">
+                <div class="col-sm-3">
+                    <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addImage">
+                        <i class="fas fa-folder-plus"></i> Thêm hình ảnh chi tiết
+                    </a>
+                </div>
+
+                <div class="col-sm-2">
+                    <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addcolor"><i class="fas fa-folder-plus"></i> Thêm Màu Sản Phẩm</a>
+                </div>
+            </div>
+            <form method="post" enctype="multipart/form-data" asp-action="ChangeProduct">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="ProductId" />
+                <div class="form-group">
+                    <label asp-for="ProductName" class="control-label"></label>
+                    <input asp-for="ProductName" class="form-control" />
+                    <span asp-validation-for="ProductName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CategoryId" class="control-label"></label>
+                    <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="BrandId" class="control-label"></label>
+                    <select asp-for="BrandId" class="form-control" asp-items="ViewBag.BrandId"></select>
+                    <span asp-validation-for="BrandId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Price" class="control-label"></label>
+                    <input asp-for="Price" class="form-control" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="StockQuantity" class="control-label"></label>
+                    <input asp-for="StockQuantity" class="form-control" />
+                    <span asp-validation-for="StockQuantity" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-12">
+                    <label asp-for="AvatarImageUrl" class="control-label">Ảnh danh mục</label>
+                    <div id="myfileupload">
+                        <input asp-for="AvatarImageUrl" type="file" id="uploadfile" onchange="readURL(this);" />
+                    </div>
+                    <div id="thumbbox">
+                        <img height="450" width="400" alt="Thumb image" id="thumbimage" style="display: none" />
+                        <a class="removeimg" href="javascript:"></a>
+                    </div>
+                    <div id="boxchoice">
+                        <a href="javascript:" class="Choicefile"><i class="fas fa-cloud-upload-alt"></i> Chọn ảnh</a>
+                        <p style="clear:both"></p>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label asp-for="CreatedAt" class="control-label"></label>
+                    <input asp-for="CreatedAt" class="form-control" />
+                    <span asp-validation-for="CreatedAt" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ProductStatus" class="control-label"></label>
+                    <input asp-for="ProductStatus" class="form-control" />
+                    <span asp-validation-for="ProductStatus" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+   
+</main>
+
+<div class="modal fade" id="addcolor" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <span class="thong-tin-thanh-toan">
+                            <h5>Thêm màu </h5>
+                        </span>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Danh mục màu hiện đang có</label>
+                        <ul style="padding-left: 10%;">
+
+                            <li><a href="" class="btn btn-primary btn-sm delete"><i class="fas fa-trash-alt"></i></a></li>
+
+                        </ul>
+                    </div>
+                   
+                </div>
+                <form action="" method="POST" enctype="multipart/form-data" class="row">
+                    <div class="form-group col-md-12">
+                        <input class="form-control" name="MaSP" value="" type="hidden" required>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Loại màu</label>
+                        <input class="form-control" name="TypeColor" type="text" required>
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        <button class="btn btn-save" type="submit">Lưu lại</button>
+                        <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="addImage" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <span class="thong-tin-thanh-toan">
+                            <h5>Thêm hình ảnh </h5>
+                        </span>
+                    </div>
+                    
+                    <form asp-action="AddImage" method="POST" enctype="multipart/form-data" class="row p-3">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="ProductId" />
+                        <div class="form-group col-md-12">
+                            <label class="control-label">Chọn ảnh</label>
+                            <input class="form-control" name="image_url[]" id="fileInput" type="file" multiple required>
+                        </div>
+                       
+                        <div class="form-group col-md-12">
+                            <div id="imagePreview"></div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <button class="btn btn-save" type="submit">Lưu lại</button>
+                            <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('fileInput').addEventListener('change', function(event) {
+        var files = event.target.files;
+        var preview = document.getElementById('imagePreview');
+        preview.innerHTML = '';
+
+        for (var i = 0; i < files.length; i++) {
+            var reader = new FileReader();
+            var file = files[i];
+
+            reader.onload = (function(file) {
+                return function(e) {
+                    var imgContainer = document.createElement('div');
+                    imgContainer.style.position = 'relative';
+                    imgContainer.style.display = 'inline-block';
+
+                    var img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.padding = '7px';
+                    img.style.maxWidth = '200px';
+                    img.style.maxHeight = '200px';
+
+                    imgContainer.appendChild(img);
+                    preview.appendChild(imgContainer);
+                };
+            })(file);
+
+            reader.readAsDataURL(files[i]);
+        }
+    });
+</script>
+<script>
+    const inpFile = document.getElementById("inpFile");
+    const loadFile = document.getElementById("loadFile");
+    const previewContainer = document.getElementById("imagePreview");
+    const previewImage = previewContainer.querySelector(".image-preview__image");
+    const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
+    inpFile.addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            previewDefaultText.style.display = "none";
+            previewImage.style.display = "block";
+            reader.addEventListener("load", function () {
+                previewImage.setAttribute("src", this.result);
+            });
+            reader.readAsDataURL(file);
+        }
+    });
+
+</script>
+
+<script>
+    function readURL(input, thumbimage) {
+        if (input.files && input.files[0]) { //Sử dụng  cho Firefox - chrome
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#thumbimage").attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        } else { // Sử dụng cho IE
+            $("#thumbimage").attr('src', input.value);
+
+        }
+        $("#thumbimage").show();
+        $('.filename').text($("#uploadfile").val());
+        $('.Choicefile').css('background', '#14142B');
+        $('.Choicefile').css('cursor', 'default');
+        $(".removeimg").show();
+        $(".Choicefile").unbind('click');
+
+    }
+    $(document).ready(function () {
+        $(".Choicefile").bind('click', function () {
+            $("#uploadfile").click();
+
+        });
+        $(".removeimg").click(function () {
+            $("#thumbimage").attr('src', '').hide();
+            $("#myfileupload").html('<input type="file" id="uploadfile"  onchange="readURL(this);" />');
+            $(".removeimg").hide();
+            $(".Choicefile").bind('click', function () {
+                $("#uploadfile").click();
+            });
+            $('.Choicefile').css('background', '#14142B');
+            $('.Choicefile').css('cursor', 'pointer');
+            $(".filename").text("");
+        });
+    })
+</script>

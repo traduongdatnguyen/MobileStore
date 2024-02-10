@@ -1,0 +1,284 @@
+﻿<link rel="stylesheet" href="~/css/skins/skin-demo-4.css">
+<link rel="stylesheet" href="~/css/demos/demo-4.css">
+@model HomeModel
+<main class="main">
+    <div class="intro-slider-container">
+            <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl"
+                 data-owl-options='{
+                        "dots": true,
+                        "nav": false,
+                        "responsive": {
+                            "1100": {
+                                "nav": true,
+                                "dots": false
+                            }
+                        }
+                    }'>
+                    @foreach(var item in Model.lstBanners){
+                        <div class="intro-slide" style="background-image: url(images/banners/@item.BannerImage);">
+                            <div class="container intro-content">
+                                <div class="row justify-content-end">
+                                    <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                    </div><!-- End .col-lg-11 offset-lg-1 -->
+                                </div><!-- End .row -->
+                            </div><!-- End .intro-content -->
+                        </div>
+
+                    <!-- End .intro-slide -->
+                    }
+              </div>
+    </div><!-- End .intro-slider-container -->
+    <div class="mb-4"></div>
+
+    <div class="container">
+        <h2 class="title text-center mb-4">DANH MỤC</h2><!-- End .title text-center -->
+
+        <div class="cat-blocks-container">
+            <div class="row">
+               
+               @foreach(var items in Model.lstCategories){
+                <div class="col-6 col-sm-4 col-lg-1">
+                    <a href="#" class="cat-block">
+                        <figure>
+                            <span>
+                                <img src="~/images/categories/@items.CategoryImage"
+                                     alt="Category image">
+                            </span>
+                        </figure>
+
+                        <h3 class="cat-block-title">
+                            @items.CategoryName
+                        </h3><!-- End .cat-block-title -->
+                    </a>
+                </div><!-- End .col-sm-4 col-lg-2 -->
+               }
+            </div><!-- End .row -->
+        </div><!-- End .cat-blocks-container -->
+    </div><!-- End .container -->
+
+    <div class="mb-3"></div>
+
+
+    <div class="container for-you">
+        <div class="heading heading-flex mb-3">
+            <div class="heading-left">
+                <h2 class="title p-2 ml-2">FLASH SALE</h2><!-- End .title -->
+            </div><!-- End .heading-left -->
+
+            <div class="heading-right">
+                <a href="recommendation">
+                    View All Recommendadion <i class="icon-long-arrow-right"></i>
+                </a>
+            </div><!-- End .heading-right -->
+        </div><!-- End .heading -->
+
+        <div class="products">
+
+            <!-- Hiển thị sản phẩm gọi ý sử dụng hàm randum để truy vấn -->
+            <div class="row justify-content-center">
+                @foreach(var product in Model.lstProductsFlashSale){
+                   
+                <div class="col-5 col-md-3 col-lg-2">
+                    <div class="product product-2">
+                        <figure class="product-media">
+                      
+                            <span class="product-label label-circle label-sale">Sale</span>
+                          
+
+                                <a href="dtdd/detail?id=@product.ProductId">
+                                <img src="~/images/products/@product.AvatarImageUrl" alt="Product image"
+                                     class="product-image">
+                            </a>
+
+                            <div class="product-action-vertical">
+                                    <a href="dtdd/detail?id=@product.ProductId"
+                                   class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
+                            </div><!-- End .product-action -->
+
+                            <div class="product-action">
+                                <a href="#" class="btn-product btn-cart" title="Add to cart">
+                                    <span>
+                                        add to
+                                        cart
+                                    </span>
+                                </a>
+                                <a href="" class="btn-product btn-quickview"
+                                   title="Quick view"><span>quick view</span></a>
+                            </div><!-- End .product-action -->
+                        </figure><!-- End .product-media -->
+
+                        <div class="product-body">
+                            <div class="product-cat">
+                                <a href="#">Recommendation</a>
+                            </div><!-- End .product-cat -->
+                            <h3 class="product-title">
+                                    <a href="dtdd/detail?id=@product.ProductId">
+                                        @product.ProductName
+                                </a>
+                            </h3>
+                            <!-- End .product-title -->
+                            <div class="product-price">
+                                    @{
+                                        decimal valueFromDatabase = product.Price.Value; // Giá trị lấy từ SQL Server
+
+                                        // Định dạng số tiền theo định dạng tiền tệ
+                                        string formattedValue = valueFromDatabase.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"));
+                                        // "N0" sẽ định dạng số nguyên không có phần thập phân, và "vi-VN" là mã quốc gia cho Việt Nam
+
+                                        // Thêm ký tự đơn vị tiền tệ
+                                        string formattedCurrency = formattedValue + "đ";
+                                    }
+                                    <span class="new-price"> @formattedCurrency </span>
+                            </div><!-- End .product-price -->
+
+                        </div><!-- End .product-body -->
+                    </div><!-- End .product -->
+                </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+            }
+            </div><!-- End .row -->
+        </div><!-- End .products -->
+    </div><!-- End .container -->
+
+    <div class="mb-3"></div><!-- End .mb-5 -->
+
+    <div class="container for-you">
+        <div class="heading heading-flex mb-3">
+            <div class="heading-left">
+                <h2 class="title p-2 ml-2">GỢI Ý HÔM NAY</h2><!-- End .title -->
+            </div><!-- End .heading-left -->
+
+            <div class="heading-right">
+                <a href="recommendation">
+                    View All Recommendadion <i class="icon-long-arrow-right"></i>
+                </a>
+            </div><!-- End .heading-right -->
+        </div><!-- End .heading -->
+
+        <div class="products">
+
+            <!-- Hiển thị sản phẩm gọi ý sử dụng hàm rand() để truy vấn -->
+            <div class="row justify-content-center">
+                @foreach (var product in Model.lstProductGoiY)
+                {
+
+                    <div class="col-5 col-md-3 col-lg-2">
+                        <div class="product product-2">
+                            <figure class="product-media">
+
+                                <span class="product-label label-circle label-sale">Sale</span>
+
+
+                                <a href="">
+                                    <img src="~/images/products/@product.AvatarImageUrl" alt="Product image"
+                                         class="product-image">
+                                </a>
+
+                                <div class="product-action-vertical">
+                                    <a href="dtdd/detail?id=@product.ProductId"
+                                       class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
+                                </div><!-- End .product-action -->
+
+                                <div class="product-action">
+                                    <a href="#" class="btn-product btn-cart" title="Add to cart">
+                                        <span>
+                                            add to
+                                            cart
+                                        </span>
+                                    </a>
+                                    <a href="" class="btn-product btn-quickview"
+                                       title="Quick view"><span>quick view</span></a>
+                                </div><!-- End .product-action -->
+                            </figure><!-- End .product-media -->
+
+                            <div class="product-body">
+                                <div class="product-cat">
+                                    <a href="#">Recommendation</a>
+                                </div><!-- End .product-cat -->
+                                <h3 class="product-title">
+                                    <a href="">
+                                        @product.ProductName
+                                    </a>
+                                </h3>
+                                <!-- End .product-title -->
+                                <div class="product-price">
+                                    @{
+                                        decimal valueFromDatabase = product.Price.Value; // Giá trị lấy từ SQL Server
+
+                                        // Định dạng số tiền theo định dạng tiền tệ
+                                        string formattedValue = valueFromDatabase.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"));
+                                        // "N0" sẽ định dạng số nguyên không có phần thập phân, và "vi-VN" là mã quốc gia cho Việt Nam
+
+                                        // Thêm ký tự đơn vị tiền tệ
+                                        string formattedCurrency = formattedValue + "đ";
+                                    }
+                                    <span class="new-price"> @formattedCurrency </span>
+                                </div><!-- End .product-price -->
+
+                            </div><!-- End .product-body -->
+                        </div><!-- End .product -->
+                    </div>
+
+                    <!-- End .col-sm-6 col-md-4 col-lg-3 -->
+                }
+            </div><!-- End .row -->
+        </div><!-- End .products -->
+    </div><!-- End .container -->
+
+    <div class="mb-3"></div><!-- End .mb-5 -->
+
+    <div class="brands-border owl-carousel owl-simple" data-toggle="owl"
+         data-owl-options='{
+                    "nav": false,
+                    "dots": false,
+                    "margin": 0,
+                    "loop": false,
+                    "responsive": {
+                        "0": {
+                            "items":2
+                        },
+                        "420": {
+                            "items":3
+                        },
+                        "600": {
+                            "items":4
+                        },
+                        "900": {
+                            "items":5
+                        },
+                        "1024": {
+                            "items":6
+                        },
+                        "1360": {
+                            "items":7
+                        }
+                    }
+                }'>
+        <a href="#" class="brand">
+            <img src="~/images/brands/1.png" alt="Brand Name">
+        </a>
+
+        <a href="#" class="brand">
+            <img src="~/images/brands/2.png" alt="Brand Name">
+        </a>
+
+        <a href="#" class="brand">
+            <img src="~/images/brands/3.png" alt="Brand Name">
+        </a>
+
+        <a href="#" class="brand">
+            <img src="~/images/brands/4.png" alt="Brand Name">
+        </a>
+
+        <a href="#" class="brand">
+            <img src="~/images/brands/5.png" alt="Brand Name">
+        </a>
+
+        <a href="#" class="brand">
+            <img src="~/images/brands/6.png" alt="Brand Name">
+        </a>
+
+        <a href="#" class="brand">
+            <img src="~/images/brands/7.png" alt="Brand Name">
+        </a>
+    </div><!-- End .owl-carousel -->
+</main><!-- End .main -->

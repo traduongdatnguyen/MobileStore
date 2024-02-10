@@ -1,0 +1,143 @@
+﻿@model MobileStore.Models.Category
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Thêm danh mục mới";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item">Danh sách sản phẩm</li>
+            <li class="breadcrumb-item"><a href="#">Thêm sản phẩm</a></li>
+        </ul>
+    </div>
+    @if (TempData["Message"] != null)
+    {
+        <div id="successMessage" class="alert alert-success" role="alert">
+            @TempData["Message"]
+        </div>
+    }
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">Tạo mới sản phẩm</h3>
+                <div class="tile-body">
+                    <div class="row element-button">
+                        <div class="col-sm-2">
+                            <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#exampleModalCenter">
+                                <i class="fas fa-folder-plus"></i> Thêm nhà cung cấp
+                            </a>
+                        </div>
+                        <div class="col-sm-2">
+                            <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#adddanhmuc">
+                                <i class="fas fa-folder-plus"></i> Thêm danh mục
+                            </a>
+                        </div>
+                        <div class="col-sm-2">
+                            <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addtinhtrang">
+                                <i class="fas fa-folder-plus"></i> Thêm tình trạng
+                            </a>
+                        </div>
+                    </div>
+                    <form method="post" asp-action="AddCategory" class="row">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        @{
+
+                            var count = Model.CategoryId + 1;
+                        }
+                        <input hidden asp-for="CategoryId" class="form-control" value="@count" type="number" placeholder="">
+
+                        <div class="form-group col-md-12">
+                            <label asp-for="CategoryName" class="control-label">Tên danh mục</label>
+                            <input asp-for="CategoryName" class="form-control" value="" type="text">
+                        </div>
+
+
+
+                        <div class="form-group col-md-12">
+                            <label asp-for="CategoryImage" class="control-label">Ảnh danh mục</label>
+                            <div id="myfileupload">
+                                <input asp-for="CategoryImage" type="file" id="uploadfile" onchange="readURL(this);" />
+                            </div>
+                            <div id="thumbbox">
+                                <img height="450" width="400" alt="Thumb image" id="thumbimage" style="display: none" />
+                                <a class="removeimg" href="javascript:"></a>
+                            </div>
+                            <div id="boxchoice">
+                                <a href="javascript:" class="Choicefile"><i class="fas fa-cloud-upload-alt"></i> Chọn ảnh</a>
+                                <p style="clear:both"></p>
+                            </div>
+
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label asp-for="Description" class="control-label">Mô tả sản phẩm</label>
+                            <input asp-for="Description" value="" class="form-control">
+
+                        </div>
+                        <button class="btn btn-save" type="submit">Lưu lại</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+</main>
+<script>
+    const inpFile = document.getElementById("inpFile");
+    const loadFile = document.getElementById("loadFile");
+    const previewContainer = document.getElementById("imagePreview");
+    const previewImage = previewContainer.querySelector(".image-preview__image");
+    const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
+    inpFile.addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            previewDefaultText.style.display = "none";
+            previewImage.style.display = "block";
+            reader.addEventListener("load", function () {
+                previewImage.setAttribute("src", this.result);
+            });
+            reader.readAsDataURL(file);
+        }
+    });
+
+</script>
+
+<script>
+    function readURL(input, thumbimage) {
+        if (input.files && input.files[0]) { //Sử dụng  cho Firefox - chrome
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#thumbimage").attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        } else { // Sử dụng cho IE
+            $("#thumbimage").attr('src', input.value);
+
+        }
+        $("#thumbimage").show();
+        $('.filename').text($("#uploadfile").val());
+        $('.Choicefile').css('background', '#14142B');
+        $('.Choicefile').css('cursor', 'default');
+        $(".removeimg").show();
+        $(".Choicefile").unbind('click');
+
+    }
+    $(document).ready(function () {
+        $(".Choicefile").bind('click', function () {
+            $("#uploadfile").click();
+
+        });
+        $(".removeimg").click(function () {
+            $("#thumbimage").attr('src', '').hide();
+            $("#myfileupload").html('<input type="file" id="uploadfile"  onchange="readURL(this);" />');
+            $(".removeimg").hide();
+            $(".Choicefile").bind('click', function () {
+                $("#uploadfile").click();
+            });
+            $('.Choicefile').css('background', '#14142B');
+            $('.Choicefile').css('cursor', 'pointer');
+            $(".filename").text("");
+        });
+    })
+</script>

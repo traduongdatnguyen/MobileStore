@@ -1,0 +1,181 @@
+﻿@model MobileStore.Models.Product
+
+@{
+    ViewData["Title"] = "Thêm sản phẩm mới";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item">Danh sách sản phẩm</li>
+            <li class="breadcrumb-item"><a href="#">Thêm sản phẩm</a></li>
+        </ul>
+    </div>
+    @if (TempData["Message"] != null)
+    {
+        <div id="successMessage" class="alert alert-success" role="alert">
+            @TempData["Message"]
+        </div>
+    }
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">Tạo mới sản phẩm</h3>
+                <div class="tile-body">
+                    <div class="row element-button">
+                        <div class="col-sm-2">
+                            <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#exampleModalCenter">
+                                <i class="fas fa-folder-plus"></i> Thêm nhà cung cấp
+                            </a>
+                        </div>
+                        <div class="col-sm-2">
+                            <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#adddanhmuc">
+                                <i class="fas fa-folder-plus"></i> Thêm danh mục
+                            </a>
+                        </div>
+                        <div class="col-sm-2">
+                            <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addtinhtrang">
+                                <i class="fas fa-folder-plus"></i> Thêm tình trạng
+                            </a>
+                        </div>
+                    </div>
+                    <form method="post" enctype="multipart/form-data" asp-action="themproduct">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="ProductId" class="control-label"></label>
+                            <input asp-for="ProductId" class="form-control" />
+                            <span asp-validation-for="ProductId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="BrandId" class="control-label"></label>
+                            <select asp-for="BrandId" class="form-control" asp-items="ViewBag.BrandId"></select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CategoryId" class="control-label"></label>
+                            <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ProductName" class="control-label"></label>
+                            <input asp-for="ProductName" class="form-control" />
+                            <span asp-validation-for="ProductName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Description" class="control-label"></label>
+                            <input asp-for="Description" class="form-control" />
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Price" class="control-label"></label>
+                            <input asp-for="Price" class="form-control" />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="StockQuantity" class="control-label"></label>
+                            <input asp-for="StockQuantity" class="form-control" />
+                            <span asp-validation-for="StockQuantity" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <label asp-for="AvatarImageUrl" class="control-label">Ảnh danh mục</label>
+                            <div id="myfileupload">
+                                <input asp-for="AvatarImageUrl" type="file" id="uploadfile" onchange="readURL(this);" />
+                            </div>
+                            <div id="thumbbox">
+                                <img height="450" width="400" alt="Thumb image" id="thumbimage" style="display: none" />
+                                <a class="removeimg" href="javascript:"></a>
+                            </div>
+                            <div id="boxchoice">
+                                <a href="javascript:" class="Choicefile"><i class="fas fa-cloud-upload-alt"></i> Chọn ảnh</a>
+                                <p style="clear:both"></p>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CreatedAt" class="control-label"></label>
+                            <input asp-for="CreatedAt" class="form-control" />
+                            <span asp-validation-for="CreatedAt" class="text-danger"></span>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label asp-for="ProductStatus" class="control-label"></label>
+                            <select asp-for="ProductStatus" class="form-control" required>
+                                <option value="flashsale">Flash Sale</option>
+                                <option value="sale">Sale</option>
+                                <option value="hot">Hot</option>
+                                <option value="new">New</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Create" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    const inpFile = document.getElementById("inpFile");
+    const loadFile = document.getElementById("loadFile");
+    const previewContainer = document.getElementById("imagePreview");
+    const previewImage = previewContainer.querySelector(".image-preview__image");
+    const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
+    inpFile.addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            previewDefaultText.style.display = "none";
+            previewImage.style.display = "block";
+            reader.addEventListener("load", function () {
+                previewImage.setAttribute("src", this.result);
+            });
+            reader.readAsDataURL(file);
+        }
+    });
+
+</script>
+
+<script>
+    function readURL(input, thumbimage) {
+        if (input.files && input.files[0]) { //Sử dụng  cho Firefox - chrome
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#thumbimage").attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        } else { // Sử dụng cho IE
+            $("#thumbimage").attr('src', input.value);
+
+        }
+        $("#thumbimage").show();
+        $('.filename').text($("#uploadfile").val());
+        $('.Choicefile').css('background', '#14142B');
+        $('.Choicefile').css('cursor', 'default');
+        $(".removeimg").show();
+        $(".Choicefile").unbind('click');
+
+    }
+    $(document).ready(function () {
+        $(".Choicefile").bind('click', function () {
+            $("#uploadfile").click();
+
+        });
+        $(".removeimg").click(function () {
+            $("#thumbimage").attr('src', '').hide();
+            $("#myfileupload").html('<input type="file" id="uploadfile"  onchange="readURL(this);" />');
+            $(".removeimg").hide();
+            $(".Choicefile").bind('click', function () {
+                $("#uploadfile").click();
+            });
+            $('.Choicefile').css('background', '#14142B');
+            $('.Choicefile').css('cursor', 'pointer');
+            $(".filename").text("");
+        });
+    })
+</script>

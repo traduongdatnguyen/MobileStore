@@ -1,0 +1,74 @@
+﻿@model IEnumerable<MobileStore.Models.Product>
+
+@{
+    ViewData["Title"] = "Quản lý sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb side">
+            <li class="breadcrumb-item active"><a href="#"><b>Danh sách sản phẩm</b></a></li>
+        </ul>
+        <div id="clock"></div>
+    </div>
+    <div class="alert alert-success" role="alert">
+        @TempData["Message"]
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="tile-body">
+                    <div class="row element-button">
+                        <div class="col-sm-2">
+
+                            <a class="btn btn-add btn-sm" href="/admin/product/add" title="Thêm">
+                                <i class="fas fa-plus"></i>
+                                Thêm sản phẩm
+                            </a>
+                        </div>
+
+                    </div>
+
+                    <table class="table table-hover table-bordered" id="sampleTable">
+
+                        <thead>
+                            <tr>
+                                <th width="10"><input type="checkbox" id="all"></th>
+                                <th>  @Html.DisplayNameFor(model => model.ProductId)</th>
+                                <th>  @Html.DisplayNameFor(model => model.ProductName)</th>
+                                <th>  @Html.DisplayNameFor(model => model.AvatarImageUrl)</th>
+                                <th>Chức năng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td width="10"><input type="checkbox" name="check1" value="1"></td>
+                                    <td>@item.ProductId</td>
+                                    <td>   @Html.DisplayFor(modelItem => item.ProductName)</td>
+                                    <td><img src="~/images/products/@item.AvatarImageUrl" alt="" width="100px;"></td>
+
+                                    <td>
+                                        <a href="product/delete?id=@item.ProductId" class="btn btn-primary btn-sm trash" type="button" title="Xóa">
+                                            <i class="fas fa-trash-alt"></i> XOÁ
+                                        </a> <br>
+                                        <a href="product/edit?ProductId=@item.ProductId" class="btn btn-primary btn-sm edit" type="button" title="Sửa" id="show-emp">
+                                            <i class="fas fa-edit"></i> CHỈNH SỬA
+                                        </a> <br>
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</main>
+
+
